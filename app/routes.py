@@ -11,8 +11,8 @@ def index():
         return render_template('index.html', username=current_user.username)
 
 
-app.route('/register', methods=['GET', 'POST'])
-def registration():
+@app.route('/register', methods=['GET', 'POST'])
+def register():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     form = RegistrationForm()
@@ -21,8 +21,9 @@ def registration():
         user = User(username=form.username.data, password=hashed_password)
         db.session.add(user)
         db.session.commit()
+        login_user(user)
         flash('Ваш аккаунт был создан. Теперь вы можете войти в него.', 'success')
-        return redirect(url_for('login'))
+        return redirect(url_for('index'))
     return render_template('register.html', title='Регистрация', form=form)
 
 
