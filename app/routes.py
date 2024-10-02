@@ -21,10 +21,11 @@ def register():
         user = User(username=form.username.data, password=hashed_password)
         db.session.add(user)
         db.session.commit()
-        login_user(user)
+        login_user(user, remember=True)  # Автоматический логин после регистрации
         flash('Ваш аккаунт был создан. Теперь вы можете войти в него.', 'success')
         return redirect(url_for('index'))
     return render_template('register.html', title='Регистрация', form=form)
+
 
 
 @app.route('/login', methods=['GET', 'POST'])
