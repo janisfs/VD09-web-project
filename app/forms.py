@@ -1,9 +1,9 @@
-from flask_wtf import FlaskForm as Flaskform
-from wtforms import StringField, PasswordField, SubmitField
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Length, EqualTo, ValidationError
 from app.models import User
 
-class RegistrationForm(Flaskform):
+class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
     password = PasswordField('Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
@@ -14,7 +14,8 @@ class RegistrationForm(Flaskform):
         if user:
             raise ValidationError('Такой пользователь уже существует. Пожалуйста, выберите другое имя пользователя.')
 
-class LoginForm(Flaskform):
+class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
+    remember = BooleanField('Remember Me')
     submit = SubmitField('Войти')

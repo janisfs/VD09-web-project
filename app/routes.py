@@ -2,13 +2,12 @@ from flask import render_template, flash, redirect, url_for, request, session
 from app import app, db, bcrypt
 from app.models import User
 from app.forms import RegistrationForm, LoginForm
-from flask_login import login_user, current_user, logout_user, login_required, fresh_login_required
+from flask_login import login_user, current_user, logout_user, login_required, login_required
 
 @app.route('/')
 @login_required
 def index():
-    if current_user.is_authenticated:
-        return render_template('index.html', username=current_user.username)
+    return render_template('index.html')
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -21,9 +20,8 @@ def register():
         user = User(username=form.username.data, password=hashed_password)
         db.session.add(user)
         db.session.commit()
-        login_user(user, remember=True)  # Автоматический логин после регистрации
         flash('Ваш аккаунт был создан. Теперь вы можете войти в него.', 'success')
-        return redirect(url_for('index'))
+        return redirect(url_for('login'))
     return render_template('register.html', title='Регистрация', form=form)
 
 

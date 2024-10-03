@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
     <h1>Привет, {{ current_user.username }}, это кликер!</h1>
-    <p>Количество кликов  - {{ current_user.clicks }}</p>
-    <a href="{{ url_for('click') }}">Кнопка</a>
+    <p>Количество кликов: {{ current_user.clicks }}</p>
+<form method="POST" action="{{ url_for('click') }}">
+    <button type="submit">Кликни меня!</button>
+</form>
+
 {% endblock %}
